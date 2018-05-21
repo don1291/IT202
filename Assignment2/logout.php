@@ -1,7 +1,7 @@
 <?php
 
   // set cookie params
-  session_set_cookie_params(0, "~np255/download/Final%20Week%209/logout.php", "web.njit.edu");
+  session_set_cookie_params(0, "~np255/Assignment2/logout.php", "web.njit.edu");
 
   session_start();
   //$_SESSION = destroy();

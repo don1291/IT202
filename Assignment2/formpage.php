@@ -1,7 +1,7 @@
 <?php
 
   // set cookie params
-  session_set_cookie_params(0, "~np255/download/Final%20Week%209/formpage.php", "web.njit.edu");
+  session_set_cookie_params(0, "~np255/Assignment2/formpage.php", "web.njit.edu");
 
   // start session
   session_start();
@@ -18,7 +18,6 @@
   gatekeeper();
   
   // Session Variables
-  /*$_SESSION["logged"] = true; */
   $user = $_SESSION["user"];
   $current_balance = $_SESSION["current_balance"];
   

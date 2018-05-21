@@ -1,7 +1,7 @@
 <?php
 
   // set cookie params
-  session_set_cookie_params(0, "~np255/download/Final%20Week%209/formpagehandler.php", "web.njit.edu");
+  session_set_cookie_params(0, "~np255/Assignment2/formpagehandler.php", "web.njit.edu");
 
    // start session
    session_start();
@@ -18,7 +18,6 @@
   gatekeeper();
   
   // Session Variables
-  //$_SESSION["logged"] = true; 
   $user = $_SESSION["user"];
   
   // Print out session user
@@ -29,13 +28,6 @@
   // GET info from form formpage.php
   $amount = $_GET['amount'];           // get amount from form formpage.php
   $choice = $_GET["choice"];           // get choice from form formpage.php
-  //$email_checked = $_GET["EMAIL"];     // get checked email from form formpage.php
-  /*if(){
-    echo "Checked";
-  }
-  else{
-    echo "not checked!";
-  }*/
 
   if(isset($_GET["EMAIL"])){
     if($choice == 'Show'){
