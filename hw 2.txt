@@ -1,0 +1,18 @@
+<!DOCTYPE html5>
+
+<form action = "hw3.php">
+
+Hello
+<br><br>
+
+<input type = "text" name="x"> UserName: <br>
+<br><br>
+
+<input type = "text" name="pass"> Password: <br>
+<br><br>
+<input type="radio" name="Mail copy" value="Mail copy" checked> Mail copy<br>
+
+<input type = "submit" value="Submit">
+<br><br>
+
+</form>

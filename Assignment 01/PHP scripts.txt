@@ -1,0 +1,276 @@
+Main php
+
+<?php
+
+//error_reporting code
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);  
+ini_set('display_errors' , 1);
+
+include ( "function_deposit.php");
+include ( "accounts.php");
+$bad = false;
+
+print "Hello" ;
+
+//DB connection code 
+$db = mysqli_connect($hostname,$username, $password ,$project);
+if (mysqli_connect_errno())
+  {
+	  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+	  exit();
+  }
+print "<br>Successfully connected to MySQL.<br>";
+mysqli_select_db( $db, $project ); ////////////////////////////////////////////
+
+
+//getdata for user and pass and authenticate  // this is from html file
+$user = $_GET [ "user" ] ;   print "<br>user is: " .$user;
+$pass = $_GET [ "password" ] ;   print "<br>pass is: " .$pass;
+$amount = $_GET['amount'];   print "<br>amount is: " .$amount;
+$choice = $_GET["choice"];   print "<br>transaction option: " .$choice;
+echo "<br>";
+
+if($_GET['EMAIL']){
+  if($choice == 'Deposit' || $choice == 'Withdraw'){
+     print ("Mailer is ONLY for show choice<br>");
+     exit;
+  }
+  else if($choice == 'Show'){
+    print("Mailer is checked and sent!<br>");
+    show($user, $amount);
+  }
+  else {
+    print("Mailer is ONLY for show choice<br>");
+    exit;
+  }
+}
+
+else if($choice == 'Deposit'){
+    deposit($user, $amount);
+}
+else if($choice == 'Withdraw'){
+    withdraw($user, $amount);
+  }
+else {
+  print("Checkbox is not SET");
+}
+
+auth($user, $pass);
+getdata("user", $user);
+/*
+$s   =  "select * from  accounts " ;
+
+print "<br>SQL statement is: $s<br>"; 
+*/
+//PROTECTION *NEW*
+/*$type = get_case (  $name, $pass, $amount, $type  );
+if ( $type == 'A')admin  ( $name, $pass);
+if ( $type != 'A')user  ( $name, $pass, $amount, $type );*/
+
+//menu for choice
+
+//if choice is D or W then get amount
+//if choice D or W  then getamount; 
+
+
+
+/*
+($t = mysqli_query( $db,  $s   ) )  or die( mysqli_error($db) );
+$num = mysqli_num_rows($t);
+print "<br>There were $num rows retrieved.<br><br>";
+
+while ( $r = mysqli_fetch_array($t,MYSQLI_ASSOC) ) {
+// user in datebase
+	$user_db				= $r[ "user" ];
+	$cur_balance 	= $r[ "cur_balance" ];
+	$email         = $r["mail"];
+
+	//The $$varname just puts $ before $varname's value
+if($user == $user_db)
+{
+  print "User is $user<br>";
+  print "Current_balance is $$cur_balance<br><br>";
+	print "Email: $email<br><br>";
+}
+else {
+  continue;
+  }
+}
+*/
+//UPDATE *NEW*
+/*if ( $type != 'A') update ( $name, $amount, $type );
+
+/ Show *NEW*/
+//show("$username" , "$out");
+
+
+//if box checked mailer ( ... )
+/*$message = $result . $result2;
+ //if   ( isset(  $_GET [  "emailresults"    ]   )   ) 
+{
+  mail($type, $name, $message, $pass);
+  };*/
+
+print "<br><br>Bye" ;
+/*mysqli_free_result($t);
+mysqli_close($db);*/
+exit ( "<br>Interaction completed.<br><br>"  ) ;
+?>
+
+
+Function PHP
+
+<?php
+	include ("accounts.php");
+
+function getdata ( $name , &$result ) {
+
+  echo " Inside get the data. <br>";
+  
+	global $flag;
+	global $db;
+	if(!isset($_GET[$name]))
+	{
+		$flag = true;
+		echo "name is undefined";
+		return;
+	}
+	if($_GET[$name] == "")
+	{
+		$flag = true;
+		echo "<br>name is empty";
+    return;
+	} else {
+      $user = $_GET[$name];
+	    echo ("<br>user is $user<br>");
+	    $result = mysqli_real_escape_string($db, $result);
+  }
+}
+
+function auth ( $user , $pass ) {
+  global $db; 
+  echo " Inside the authentication. <br>";
+  
+  $s   =  "select * from  accounts" ;
+	($t = mysqli_query( $db,  $s   ) )  or die( mysqli_error($db) );
+	
+	while ( $r = mysqli_fetch_array($t,MYSQLI_ASSOC) ) {
+		  $user_db   = $r[ "user" ];
+      $pass_db   = $r["pass"];
+      
+      if(($user == $user_db) && ($pass == $pass_db)){
+          print("Good Credentials!<br>");
+          break;
+        }
+        else {
+          print("Bad Credentials!<br>");
+          continue;
+        }
+      }  
+     
+    
+}
+
+function deposit ($user, $amount)
+{
+	global $db;
+	
+	$s = "Update accounts set cur_balance = cur_balance +'$amount' where user = '$user'";
+	echo "<br> s is $s <br>";
+	
+	mysqli_query($db, $s) or die (mysqli_error($db));
+	
+  $s = "insert into transactions (user, type, amount, date) values ('$user', 'D', '$amount', NOW())";
+	echo "<br> s is $s <br>";
+	
+	mysqli_query($db, $s) or die (mysqli_error($db));
+ 
+}
+
+function withdraw ($user, $amount)
+{
+	global $db;
+  $s   =  "select * from  accounts" ;
+	($t = mysqli_query( $db,  $s   ) )  or die( mysqli_error($db) );
+	
+	while ( $r = mysqli_fetch_array($t,MYSQLI_ASSOC) ) {
+		  $user_db   = $r[ "user" ];
+      //$pass_db   = $r["pass"];
+      $cur_balance_db = $r["cur_balance"];
+      // if user is valid but current balance is less than or equal to 0, exit the function
+      if($user == $user_db){
+        if($cur_balance_db <= 0){
+            print("current balance is 0. <br>");
+            exit;
+        }
+        else{
+          print("Withdraw Successful! ");
+        }
+       }
+ } 
+	/*
+	$s = "Update accounts set cur_balance = cur_balance -'$amount' where user = '$user'";
+	echo "<br> s is $s <br>";
+	
+	mysqli_query($db, $s) or die (mysqli_error($db));
+	
+  $s = "insert into transactions (user, type, amount, date) values ('$user', 'W', '$amount', NOW())";
+	echo "<br> s is $s <br>";
+	
+ 
+	mysqli_query($db, $s) or die (mysqli_error($db));
+ */
+}
+
+function show( $user , &$out  ){
+	global $db;
+	$s   =  "select * from  accounts" ;
+	$out .= "<br>SQL statement is: $s<br>"; 
+	($t = mysqli_query( $db,  $s   ) )  or die( mysqli_error($db) );
+	
+	while ( $r = mysqli_fetch_array($t,MYSQLI_ASSOC) ) {
+		$user_db 				= $r[ "user" ];
+		$cur_balance 	= $r[ "cur_balance" ];
+   if($user == $user_db){
+		  $out .= "user is:$user<br>";
+		  $out .= "Current_balance is $$cur_balance<br><br>";
+        }
+   }
+	//The $$varname just puts $ before $varname's value
+	$a   =  "select * from  transactions where user = '$user'" ;
+	$out .= "<br>SQL statement is: $a<br>"; 
+	($b = mysqli_query( $db,  $a   ) )  or die( mysqli_error($db) );
+
+ 
+	while ( $r = mysqli_fetch_array($b,MYSQLI_ASSOC) ) {
+		$type 		= $r[ "type" ];
+		$amount 	= $r[ "amount" ];
+		$date     = $r["date"];
+		$out .= "Type is $type <br>";
+		$out .= "Amount is $amount <br>";
+		$out .= "Date is $date <br>";
+	//	print "User is $user<br>";
+		//print "Amount is $cur_balance<br><br>";
+    //print "Date is $date<br>";
+	};
+	echo $out;
+  mailer($user, $out);
+}
+
+function mailer( $user , $out){
+  if ($user == 'donut89'){
+    $to = "donut89@mailinator.com";
+    $subject = "hello 10 4 2017";
+    $message = $out;
+    mail ($to, $subject, $message);
+  }
+  if($user == 'Phil91'){
+    $to = "phil91@mailinator.com";
+    $subject = "hello 10 4 2017";
+    $message = $out;
+    mail ($to, $subject, $message);
+  }
+}
+
+
+?>

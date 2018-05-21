@@ -1,0 +1,85 @@
+<!-- CSS STYLING -->
+<!DOCTYPE html>
+<html>
+<style>
+  .green{
+    color: green;
+  }
+  .red{
+    color: red;
+  }
+</style>
+</html>
+
+<?php
+
+  // set cookie params
+  session_set_cookie_params(0, "~np255/Assignment2/login.php", "web.njit.edu");
+
+  // start session
+  session_start();
+
+  // echo session id
+  echo session_id();
+  
+  //error_reporting code
+  error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);  
+  ini_set('display_errors' , 1);
+  
+  // include php files
+  include('accounts.php'); 			    // database information
+  include('function_deposit.php');	// all functions file
+  
+   //DB connection code 
+  $db = mysqli_connect($hostname,$username, $password ,$project);
+  
+  if (mysqli_connect_errno())     // if database cannot connect
+  {
+	  echo "Failed to connect to MySQL: " . mysqli_connect_error();    // display cannot connect
+	  exit();
+  }
+
+  print "<br>Successfully connected to MySQL.<br>";    // otherwise, database connected successfully
+  mysqli_select_db( $db, $project );                   // select the database, include the db connection as parameter
+  
+  
+  // Get (user, pass, delay) data from form
+  $user = $_GET["user"];
+  $pass = $_GET["pass"];
+  $delay = $_GET["delay"];
+  
+  // sanitize input
+  $user = mysqli_real_escape_string($db, $user);
+  $pass = mysqli_real_escape_string($db, $pass);
+  $delay = mysqli_real_escape_string($db, $delay);
+  
+  // echo input values
+  echo $user;
+  echo "<br>";
+  echo $pass;
+  echo "<br>";
+  echo $delay;
+  echo "<br>";
+  
+  // Auth function to validate user and pass  
+  // if user and pass are valid
+  if(auth($user, $pass, $t) == true){
+  
+     $r = mysqli_fetch_array($t,MYSQLI_ASSOC);
+     $current_balance = $r["cur_balance"];
+  
+     $_SESSION["user"] = $user;
+     $_SESSION["current_balance"] = $current_balance;
+     $_SESSION["logged"] = true;
+     $message = "<h1 class=\"green\">Valid. Redirecting you to formpage.php...</h1>";  // message for the redirect function parameter
+     redirect($message,"formpage.php", $delay);        // redirect function
+     
+  }
+  // else if user and pass are not valid
+  else{
+     $_SESSION["logged"] = false;
+     $message = "<h1 class=\"red\">Invalid. Redirecting you to login.html...</h1>";     // message for the redirect function parameter
+     redirect($message,"login.html", $delay);          // redirect function
+  }
+
+?>

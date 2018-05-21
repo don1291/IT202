@@ -1,0 +1,11 @@
+<!DOCTYPE html5>
+
+<form action = "xhello.php" >
+
+<input type = text name="x">
+<br><br>
+
+
+<input type = submit>
+
+</form>

@@ -1,0 +1,34 @@
+<!DOCTYPE html> 
+<style>
+#amount { display : none;  }
+#field {width 70% ; margin: auto ; color : magenta;}
+</style>
+<script>
+function appear( ){
+
+	alert("Hello");
+	ptr1 = document.getElementById("amount")
+	ptr2 = document.getElementById("choice")
+	
+	$menuvalue = ptr2.value
+	if ($menuvalue == "Deposit") {ptr1.style.display = "block" ; return;}
+	
+}
+</script>
+<form action = "main.php" >
+<fieldset id="field">
+<input type = "text" name="user" id="user" autocomplete = "off" placeholder="UCID" required>User<br><br>
+<input type = "text" name="user" id="password" autocomplete = "off" placeholder="PASSWORD" required>Password<br><br>
+<input type = "number" name="amount" id="amount">Amount<br><br>
+<select name="choice"  id="choice" onchange="appear()" >
+<option value=""> Choose </option>
+<option value="Show"> Show </option>
+<option value="Deposit"> Deposit </option>
+<option value="Withdraw"> Withdraw </option>
+</select><br><br>
+
+<input type="checkbox" name="EMAIL" value="EMAIL" checked> EMAIL<br><br>
+<input type=submit>
+</form>
+
+<br><br>

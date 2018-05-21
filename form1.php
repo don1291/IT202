@@ -1,0 +1,3 @@
+Hello<br>Successfully connected to MySQL.<br><br />
+<b>Notice</b>:  Undefined index: user in <b>/afs/cad.njit.edu/u/m/c/mchugh/public_html/202/NOTES/A_Weeks/WEEK02/form1.php</b> on line <b>21</b><br />
+<br>user is: <br>SQL statement is: select * from  A <br><br>2 rows retrieved from DB table.<br><br>user is bert  ||  current_balance is 150.35<br>user is joe1  ||  current_balance is 5744.54<br><br>bye<br>Interaction completed.<br><br>

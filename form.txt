@@ -1,0 +1,15 @@
+Hello
+Successfully connected to MySQL.
+
+Notice: Undefined index: user in /afs/cad.njit.edu/u/m/c/mchugh/public_html/202/NOTES/A_Weeks/WEEK02/form1.php on line 21
+
+user is: 
+SQL statement is: select * from A 
+
+2 rows retrieved from DB table.
+
+user is bert || current_balance is 150.35
+user is joe1 || current_balance is 5744.54
+
+bye
+Interaction completed.

@@ -1,0 +1,49 @@
+<!DOCTYPE html> 
+<style>
+#amount { display : none; background : white;  }
+#field {width 70% ; margin: auto ; color : magenta;}
+</style>
+<script>
+function appear( ){
+
+	alert("Hello");
+	ptr1 = document.getElementById("amount")
+	ptr2 = document.getElementById("choice")
+	
+	$menuvalue = ptr2.value
+	if ($menuvalue == "Deposit") {ptr1.style.display = "block" ; return}
+  else if ( $menuvalue == "Show") {ptr1.style.display = "none";  return}
+  else if ($menuvalue == "Withdraw") {ptr1.style.display = "block" ; return }
+  else if ( $menuvalue == "") {ptr1.style.display = "none"; return }
+
+	
+}
+</script>
+<form action = "main.php" method="GET">
+  <fieldset id="field">
+    <div id="userField">
+      <input type = text name="user" id="user" autocomplete = "off" placeholder="UCID" required>User<br><br>
+    </div>
+    <div id="passField">
+      <input type = text name="password" id="password" autocomplete = "off" placeholder="PASSWORD" required>Password<br><br>
+    </div>
+    <div id="amountField">
+      <input type ="number" step = "1" name="amount" id="amount">Amount<br><br>
+    </div>
+    <div id="choiceSelection">
+      <select name="choice"  id="choice" onchange="appear()" >
+        <option value=""> Choose </option>
+        <option value="Show"> Show </option>
+        <option value="Deposit"> Deposit </option>
+        <option value="Withdraw"> Withdraw </option>
+      </select><br><br>
+    </div>
+    <div id="checkboxField">
+      <input type="checkbox" name="EMAIL" checked> EMAIL<br><br>
+    </div>
+    <div id="submitButton">
+      <input type=submit>
+    </div>
+</form>
+
+<br><br>
